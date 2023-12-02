@@ -3,6 +3,7 @@ OS programming assingment #2
 
 By Anthony Dietz
 
+This project demonstrate the use of the Banker's algorith mto avoid deadlocks in operating systems. The project has two files, a main.cpp file and a data.txt file. The main reads off whatever values are in the data file.
 ## data file
 data.txt has four groups;
 
