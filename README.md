@@ -26,9 +26,10 @@ g++ -o main main.cpp
 ./main
 ```
 
+## Example
 
-
-
+![image](https://github.com/adietz12/BankersAlgorithm/assets/150217383/b7b1273d-009e-4272-95f1-53b004e5b354)
+Code shows the output of the bankers algorithm
 
 
 
