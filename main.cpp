@@ -43,54 +43,70 @@ int main() {
     // Close the file
     inFile.close();
 
-    // Banker's Algorithm
-    std::vector<int> f(n, 0), ans(n, 0);
-    int ind = 0;
+// Banker's Algorithm
+std::vector<int> f(n, 0), ans(n, 0);
+int ind = 0;
 
-    std::vector<std::vector<int>> need(n, std::vector<int>(m, 0));
+// Initialize the 'need' matrix, representing the remaining resources needed for each process
+std::vector<std::vector<int>> need(n, std::vector<int>(m, 0));
+for (i = 0; i < n; i++) {
+    for (j = 0; j < m; j++)
+        need[i][j] = max[i][j] - alloc[i][j];
+}
+
+int safe = 1;
+
+// Iterate through processes to find a safe execution sequence
+for (k = 0; k < n; k++) {
+    int selected = -1;
+
+    // Iterate through processes to find one that can be executed safely
     for (i = 0; i < n; i++) {
-        for (j = 0; j < m; j++)
-            need[i][j] = max[i][j] - alloc[i][j];
-    }
+        if (f[i] == 0) { // Check if the process is not yet executed
+            int flag = 1;
 
-    int safe = 1;
-    for (k = 0; k < n; k++) {
-        int selected = -1;
-        for (i = 0; i < n; i++) {
-            if (f[i] == 0) {
-                int flag = 1;
-                for (j = 0; j < m; j++) {
-                    if (need[i][j] > avail[j]) {
-                        flag = 0;
-                        break;
-                    }
-                }
-                if (flag) {
-                    selected = i;
+            // Check if the process can be executed safely by comparing its 'need' with available resources
+            for (j = 0; j < m; j++) {
+                if (need[i][j] > avail[j]) {
+                    flag = 0;
                     break;
                 }
             }
-        }
 
-        if (selected == -1) {
-            safe = 0;  // No safe sequence found
-            break;
+            if (flag) {
+                selected = i; // Select the process
+                break;
+            }
         }
-
-        ans[ind++] = selected;
-        for (j = 0; j < m; j++)
-            avail[j] += alloc[selected][j];
-        f[selected] = 1;
     }
 
-    if (safe) {
-        std::cout << "Following is the SAFE Sequence" << std::endl;
-        for (i = 0; i < n - 1; i++)
-            std::cout << " P" << ans[i] << " ->";
-        std::cout << " P" << ans[n - 1] << std::endl;
-    } else {
-        std::cout << "The given sequence is not safe" << std::endl;
+    // Check if a process was selected
+    if (selected == -1) {
+        safe = 0; // No safe sequence found, set the flag to 0
+        break;
     }
 
-    return 0;
+    // Execute the selected process
+    ans[ind++] = selected;
+
+    // Update available resources after executing the process
+    for (j = 0; j < m; j++)
+        avail[j] += alloc[selected][j];
+
+    // Mark the selected process as executed
+    f[selected] = 1;
+}
+
+// Check if a safe sequence was found and print the sequence or an error message accordingly
+if (safe) {
+    std::cout << "Following is the SAFE Sequence" << std::endl;
+    for (i = 0; i < n - 1; i++)
+        std::cout << " P" << ans[i] << " ->";
+    std::cout << " P" << ans[n - 1] << std::endl;
+} else {
+    std::cout << "The given sequence is not safe" << std::endl;
+}
+
+// Return 0 to indicate successful execution
+return 0;
 }
