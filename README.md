@@ -10,7 +10,7 @@ line 1 defines the number of processes and resources
 
 lines 4-8 define the allocation matrix
 
-lines 10-15 define the MAX matrix
+lines 11-15 define the MAX matrix
 
 line 17 defines the available resources
 
